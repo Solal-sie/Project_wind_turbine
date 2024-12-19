@@ -60,12 +60,14 @@ Outputs:
 
 To reproduce results in the report, you will need to follow these steps:
 
-``````
-If you want to generate a one building map, first make some changes in "*Navier_Stokes_solver_main.m*":
-- Go to line 29 and comments it, then see line 31 and decomments it.
-- Go to line 37 and comments it, then see line 39 and decomments it.
+
+- If you want to generate a one building map, first make some changes in "*Navier_Stokes_solver_main.m*":
+    - Go to line 29 and comments it, then see line 31 and decomments it.
+    - Go to line 37 and comments it, then see line 39 and decomments it.
 Do the same instructions, but use the program in brakets. 
-``````
+
+- If you want to see the map on the report you to change line 31 in "*Navier_Stokes_solver_main.m*. in the brakets of readmatrix copy/paste this: '../Internal/map_from_the_report.csv' 
+If you want to go back to random buildings copy/paste this: '../Internal/map_building.csv'
 
 1. Find "*building_map_main.c*"("*one_building_map_main.c*") in the "*Map/*" folder. Run the programme.
 
@@ -104,3 +106,4 @@ Constants used in "*turbines_powwer_main.c*" and in "*Navier_Stokes_solver.m*" r
 The function converting the "*biggest_wind_location.csv*" into power comes from [Discover The Greentech](https://www.discoverthegreentech.com/enr/energie-eolienne/puissance/)
 
 The resolution of the Naviers-Stokes equation relies on Prof. Lorena Barba courses on Computational Fuild Dynamic. [BarbaGroup](https://github.com/barbagroup/CFDPython)
+Helped by videos Doctor Manuel Ramsaier. [Dr -ing Manuel Ramsaier](https://www.youtube.com/watch?v=rXiKiy25jGY&list=PLE4jpqcRJiBoJMMJlnWLudgBf_iQNjTz8)
