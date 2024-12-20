@@ -24,28 +24,24 @@
 wind_data = readmatrix('../Data/Wind_Data_Lausanne.csv');
 
 % file containing a matrix of size (nx=51,ny=51) when there is a building(1) or not(0)
-
-    % Map for 30 buildings
-map_buildings = readmatrix('../Internal/map_buildings.csv');  
+  
     % Map for one building
-%map_buildings = readmatrix('../Internal/map_one_building.csv');
+map_buildings = readmatrix('../Internal/map_one_building.csv');
 
 % file with the coordonates of each building (start x, start y, end x, 
-% end y) according to map_buildings.csv 
-    
-    % Coordinates for the 30 buildings 
-coordinates_buildings = readmatrix('../Internal/coordinates_buildings.csv');
-    % Coordinates for the building
-%coordinates_buildings = readmatrix('../Internal/coordinates_one_building.csv');
+% end y) according to map_one_buildings.csv 
 
-%%%%%%%%%%%%%%wind_dir = Wind_direction(wind_data); % gives the mean wind speed from the Wind_Data_Lausanne.csv file and projecting it in u and v, the speed axis.
+    % Coordinates for the building
+coordinates_buildings = readmatrix('../Internal/coordinates_one_building.csv');
+
 
 %% Initialization of variables 
 
 % Size in axis x and axis y of the map according to map_buildings.csv
 nx = length(map_buildings); ny = length(map_buildings);
 
-nit = 10; % nit is the number of iteration for ??????????????????????????????????????????????????????????????
+% nit is the number of iteration for the Poisson Equation
+nit = 10; 
 
 % Minimum and maximum value of x on the x axis similarely for y on the y
 % axis 
@@ -58,8 +54,7 @@ dx = (xmax - xmin)/(nx - 1); dy = (ymax - ymin)/(ny - 1);
 x = linspace(0,nx-1,nx); y = linspace(0,ny-1,ny);
 [X,Y] = meshgrid(x,y);
 
-
-% Constants 
+%% Constants 
 
 % Viscosity of air [kg/m^3]
 rho = 1.184; 
@@ -75,7 +70,7 @@ F=1;
 dt=0.01; 
 
 
-% Initialization of the map
+%% Initialization of the map
 
 % Velocity vector projection on x and y respectively
 u=map_buildings; v=map_buildings;
@@ -113,7 +108,7 @@ len = length(wind_data(:,1));
 wind_in = nan(1, len);
 angle = nan(1,len);
 
-% Initialize a count to know the size of the wind list. ????????????????????????????????????? pas sur si c'est bien dit  
+% Initialize a count to know the size of the wind list.   
 count = 0;
 
 % Loop which selects only wind in a range of 180°([0, 45] U [225, 360]), 
@@ -154,7 +149,7 @@ mean_wind_v =sum(wind_v)/count;
 
 
 
-%% Navier_Stokes equation
+%% Navier_Stokes_equation
 % This part solve and show at each stepcount the wind field u and v. 
 % It assumes that the map as buildings on it comming from map_buildings.csv
 % which are represented by 1 on the map. At each stepcount, each point 
@@ -243,8 +238,6 @@ while stepcount < 100
     % Iteration on velocity field (u,v)
     for j=2:nx-1
         for i=2:ny-1 
-
-            
             if map_buildings(i,j) == 1
                 u(i,j) = 0;
                 v(i,j) = 0;
@@ -305,25 +298,13 @@ hold on;
 xlabel('axis x [m]')
 ylabel('axis y [m]')
 title('Wind passing through a city with urban wind turbines')
-saveas(gcf, '../Results/Map.png');
 
 
-%% Placing the buildings and the wind turbines
-% This function show the buildings on the plot and evalute where the
-% biggest winds are.
 
-speed_matrix = zeros(nx,ny);
-
-% Speed is calculated at each point with the norm of each u and v vector 
-% and added to speed_matrix
-for i = 1:nx
-    for j = 1:nx
-        speed_matrix(i,j) = sqrt(u(i,j)^2 + v(i,j)^2);
-    end
-end
+%% Placing_the_building Function
 
 % Displaying the buildings
-for B = 1:length(coordinates_buildings)
+for B = 1%:length(coordinates_buildings)
 
     rectangle('Position', [coordinates_buildings(B,1), coordinates_buildings(B,2),...
         coordinates_buildings(B,3)-coordinates_buildings(B,1),...
@@ -331,57 +312,10 @@ for B = 1:length(coordinates_buildings)
         'EdgeColor', [0.4,0.4, 0.4] , 'FaceColor', [0.4, 0.4, 0.4]);
 end
 
-    %% Best location for wind turbines
-if lenght8
-number_of_turbines = 6;
-
-% Initializing a matrix to put coordinate and speed of each turbine  
-wind_speed = zeros(number_of_turbines,3);
-
-%title of each columne
-wind_speed(1, :)= "coord y"; "coord x"; "speed";
-
-for h = 1:number_of_turbines
-    wind_speed_1 = 0;
-    for i = 2:nx
-        for j = 2:ny 
-            if speed_matrix(i,j) > wind_speed_1
-                wind_speed_1 = speed_matrix(i,j);
-                wind_speed(h,3) = speed_matrix(i,j);
-                wind_speed(h,2) = i;
-                wind_speed(h,1) = j;
-            end
-        end
-    end
-
-    % The next line prevents two turbines to be next to one another
-    speed_matrix(int16(wind_speed(h,2) - 1) : int16(wind_speed(h,2) + 1),...
-        int16(wind_speed(h,1) - 1) : int16(wind_speed(h,1) + 1)) = 0;
-
-    speed_matrix(wind_speed(h,2),wind_speed(h,1)) =NaN;
-end
+% Save the map with the winds in results folder
+saveas(gcf, '../Results/Map_one_building.png');
 
 
 
-% Displaying the turbines
-for T = 1:number_of_turbines
-    plot(wind_speed(T,2) - 1, wind_speed(T,1) - 1,...
-        'ro', 'MarkerFaceColor','r');
-end
-
-h = plot(wind_speed(1,2) - 1, wind_speed(1,1) - 1,...
-    'ro','MarkerFaceColor','r');
-
-for i = 1:number_of_turbines
-    text(wind_speed(i,2) - 1, wind_speed(i,1) - 1, num2str(i),...
-        'VerticalAlignment', 'bottom', 'HorizontalAlignment', 'right',...
-        'FontSize', 12, 'Color', 'r');
-end
-
-legend(h, 'Wind turbines');
-hold off;
-
-% Making a csv file for calculating the power generated by each turbines
-writematrix(wind_speed, '../Internal/biggest_wind_locations.csv');
 
 

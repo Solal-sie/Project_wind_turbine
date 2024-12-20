@@ -72,9 +72,6 @@ void map_bat_to_csv( int **list, const char *filename2, int x_size, int y_size) 
 
 int main() {
     
-    // Seed for random number
-    srand(time(NULL)); 
-
     // Size of the map
     int nx = 51;          
     int ny = 51; 

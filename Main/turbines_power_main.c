@@ -3,8 +3,8 @@
 #include <math.h>
 
 #define RHO_AIR 1.814 //  Density of air [km/m^3]
-#define Cp 0.3 // Coefficient of power
-#define A 1 // Area of the blade [m^2]
+#define Cp 0.35  // Coefficient of power
+#define A 0.16 // Area of the blade [m^2]
 #define COL 4
 #define ROW 6
 #define YIELD 0.35  // Yield of the turbine

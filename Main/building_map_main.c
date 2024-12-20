@@ -37,13 +37,13 @@ void random_building_create(const char * filename,int **list, int x_size, int y_
         int start_x = rand() % (x_size - 4) + 2; 
         int start_y = rand() % (y_size - 4) + 2;
 
-        // Check if buildings do not go beyond the map
+        // Check for buildings to not go beyond the map
         int if_building_out[9];  
         for (int i=0; i <= 9; i++ ) { 
             if_building_out[i] = x_size-i; 
 
             if (if_building_out[i] == start_x) {
-                start_x = start_x - 9; //bonne taille
+                start_x = start_x - 9; 
                 
             } if (if_building_out[i] == start_y) {
                 start_y = start_y - 9;
@@ -58,7 +58,7 @@ void random_building_create(const char * filename,int **list, int x_size, int y_
         // Write the coordinates of the buildings in the CSV file
         fprintf(file, "%d, %d, %d, %d\n", start_x, start_y, fin_x, fin_y);
 
-        // Fill the list with the buildings(1)
+        // Fill the list with ones as buildings
         for (int k = 0; k < x_size; k++) {
             for(int l = 0; l < y_size; l++){
                 if (k >= start_x && k <= fin_x && l >= start_y && l <= fin_y) {

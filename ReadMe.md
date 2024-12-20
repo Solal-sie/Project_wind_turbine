@@ -5,17 +5,17 @@
 This program simulates how wind field evolve in area. The code creates a map simulating the wind field in urban area. It evaluates where are the biggest wind, more accurately it determines the norm of the velocity vector projected in u and v direction in cartesian coordinates and calculates the the the power resulting  from this biggest wind locations.
 
 The program will:
-1. Compute randomly a map representing a random city and the coordinates of the buildings ("*building_map_main.c*", located in "*Map*").
-2. Compute The Navier-Stokes solver which creates a wind map accoring to the map we created before and compute 6 locations where the norm of the wind is the biggest("*Navier_Stokes_Solver_main.m*", located in "*Main*"). 
-3. From the wind map one last program use the 6 best locations to add a wind turbine and then calculates the power generated ("*turbine_power_main.c*", located in "*Power*"). 
+1. Compute randomly a map representing a random city and the coordinates of the buildings ("*building_map_main.c*", located in "*Main/*").
+2. Compute The Navier-Stokes solver which creates a wind map according to the map we created before and compute 6 locations where the norm of the wind is the biggest("*Navier_Stokes_Solver_main.m*", located in "*Main/*"). 
+3. From the wind map one last program use the 6 best locations to add a wind turbine and then calculates the power generated ("*turbine_power_main.c*", located in "*Main/*"). 
+4. Compute a specific map representing one building and its coordinates ("*one_building_map.c*", located in "*Main/*").
+5. Compute The Navier-Stokes solver for one building which creates a wind map according to the map we created before ("*Navier_Stokes_one_building.m*", located in "*Main/*"). 
 
 ## Project structure
 
-- "* Data*" contains allthe files that will be created and required for the simulation.  
-- "*Map*" contains the map program code that creates map.
-- "*Main*" runs the propagation of the winds through the map.
-- "*Power*" contains the power calculating program
-- "*Results*" contains all the results as .csv and .png file. 
+- "*Data/*" contains all files that will be created and required for the simulation.  
+- "*Main/*" contains all the C and Matlab files for the creation of the map, the propagation of the winds through the map and the power resulting from the biggest wind.
+- "*Results/*" contains all the results as .csv and .png file. 
 
 ### Inputs and Outputs
 
@@ -28,7 +28,7 @@ Internal files:
 - "*Internal/biggest_wind_locations.csv*" is a semicolon-delimited file.
 
 Outputs:
-- "*Results*" contains all the results: "*Map.png* and "*Power_wind_and_loc*".
+- "*Results/*" contains all the results: "*Map.png*", "*Power_wind_and_loc.csv*" and "*Map_one_building.png*".
 
 ## Implementation details
 
@@ -37,48 +37,65 @@ Outputs:
 - The simulation is handled by Matlab. it uses the inputs, directly outputs the result of computation and visualizes it into a PNG file.
 - C also handle another output.
 
-**Structure:** In the directory "*Project_main/*" are located:
-- "*Map/*" folder:
+**Structure:** In the directory "*Project_wind_turbine*" are located:
+
+- "*Main/*" folder:
+    - "*Run_All*"
+        - This programm compiles and then runs all files. 
     - "*building_map_main.c*"
         - Generate a map of defined size with random sized and located buildings.
         - Compute start and end coordinates in cartesian coordinates: 
         - Export the map and coordinates of each buildings in a separated CSV located in "*Internal*".
-- "*Main/*" folder:
     - "*Navier_Stokes_solver_main.m*" 
-        - Reads "*Wind_Data_Lausanne.csv*" from "*Data/*" folder and compute it to have the mean speed over the year.
+        - Reads "*Wind_Data_Lausanne.csv*" from "*Data*" folder and computes it to have the mean speed over the year.
         - Reads "*map_buildings.csv*" and "*coordinates_buildings.csv*" located in "*Internal*".
-        - Compute, using "*map_buildings.csv*", the Navier-Stokes Equation and simulate on a map the wind field. 
-        - Add squares representing buildings using "*coordinates_buildings.csv*"
-        - Export the map in PNG format in the folder "*Results/*".
-        - Evaluates the locations of biggest wind on the map and export them in a CSV in    "*Internals/*" folder. 
-- "*Power/*" folder:
+        - Computes, using "*map_buildings.csv*", the Navier-Stokes Equation and simulate on a map the wind field. 
+        - Add rectangles representing buildings using "*coordinates_buildings.csv*"
+        - Export the map in PNG format in the folder "*Results*".
+        - Evaluates the locations of biggest wind on the map and export them in a CSV in "*Internal/*" folder. 
     - "*turbines_power_main.c*"
-        - Reads "*biggest_wind_locations.csv*" and compute the velocities to find to power.
-        - Write a csv file and exports it to "*Results/*" folder as "*Power_wind_and_loc.csv*".
+        - Reads "*biggest_wind_locations.csv*" and compute the velocities to find the power.
+        - Writes a csv file and exports it to "*Results*" folder as "*Power_wind_and_loc.csv*".
+    - "*one_building_map.c*"
+        - Generate a map of defined size with one sized and located building.
+        - Compute start and end coordinates in cartesian coordinates: 
+        - Export the map and coordinates of each buildings in a separated CSV located in "*Internal/*".
+    - "*Navier_Stokes_one_building.m*" 
+        - Reads "*Wind_Data_Lausanne.csv*" from "*Data/*" folder and computes it to have the mean speed over the year.
+        - Reads "*map_one_building.csv*" and "*coordinates_one_building.csv*" located in "*Internal/*".
+        - Computes, using "*map_one_building.csv*", the Navier-Stokes Equation and simulate on a map the wind field. 
+        - Add rectangles representing the building using "*coordinates_one_buildings.csv*"
+        - Export the map in PNG format in the folder "*Results/*" as name "*Map_one_building.png*".
+    
 
 ## Instructions
 
-To reproduce results in the report, you will need to follow these steps:
+To reproduce results in the report, you will need to follow these steps: 
 
+Before touching everything Run the "*Run_All*" program to compile and run all files.
+    - Close the window the shows the map before reruning the program. 
 
-- If you want to generate a one building map, first make some changes in "*Navier_Stokes_solver_main.m*":
-    - Go to line 29 and comments it, then see line 31 and decomments it.
-    - Go to line 37 and comments it, then see line 39 and decomments it.
-Do the same instructions, but use the program in brakets. 
-
-- If you want to see the map on the report you to change line 31 in "*Navier_Stokes_solver_main.m*. in the brakets of readmatrix copy/paste this: '../Internal/map_from_the_report.csv' 
+- If you want to see the map from the report you have to change line 30 in "*Navier_Stokes_solver_main.m*. In the brakets of readmatrix copy/paste this: '../Internal/map_from_the_report.csv' 
 If you want to go back to random buildings copy/paste this: '../Internal/map_building.csv'
 
-1. Find "*building_map_main.c*"("*one_building_map_main.c*") in the "*Map/*" folder. Run the programme.
+1. Find "*building_map_main.c*"("*one_building_map_main.c*") in the "*Main/*" folder. Run the program.
 
 2. Go in the "*Main/*" folder and run the "*Navier_Stokes_solver_main.m*" code. 
-It may be possible the map empties itself before the end of the iteration. 
-If so, you have two choises:
-                - In "*Navier_Stokes_solver_main.m*" follow comments in line 68.
+It may be possible that the map empties itself before the end of the iteration. 
+If so, you have two choices:
+                - In "*Navier_Stokes_solver_main.m*" follow comments in line 63.
                 - Go back to step 1. and rerun "*building_map_main.c*".  
 
-3. Find the "*Power/*" folder and run "*turbines_power_main**". 
+3. In the "*Main/*" folder run "*turbines_power_main.c**".
 
+4. All the results except the Navier-Stokes plot will be in the "*Result/*".  
+
+## Trouble shooting
+
+There may be some troubles with "*Navier_Stokes_solver_main.m*":
+- If the map empties itself befor the stepcount is at 100, see Instruction 2. The problem is that the viscosity of the fluid is not high enough.
+
+"*Navier_Stokes_solver_main.m*" and "*Navier_Stokes_one_building.m*" program are quite long this is like so, because the Wind_direction function, Placing_the_building function and Best_location_for_wind_turbines are directly inside the code. Actually this is because the functions created with MATLAB function script doesn't work on others environment than the one who created it. 
 
 
 ## Requirememnts
@@ -97,7 +114,7 @@ No specific libraries are required for the program to work
 
 ### Data
 
-The data files "*Wind_Data_Lausanne.csv*" comes from ????????????????
+The data files "*Wind_Data_Lausanne.csv*" comes from Prof. Satoshi Takahama personal data. 
 
 Constants used in "*turbines_powwer_main.c*" and in "*Navier_Stokes_solver.m*" relies on the [Engineers EGDE](https://www.engineersedge.com/physics/viscosity_of_air_dynamic_and_kinematic_14483.htm).
 
