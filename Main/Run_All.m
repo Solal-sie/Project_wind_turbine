@@ -8,7 +8,7 @@ compiledProgram1 = 'building_map_main.out';
 assert(status == 0, 'Error during C code compilation:\n%s', cmdout1);
  
 %Run the C program
-cmd1 = sprintf('%s',compiledProgram);
+cmd1 = sprintf('%s',compiledProgram1);
 
 [status, cmdout1] = system(cmd1);
 if status ~= 0
@@ -49,7 +49,7 @@ compiledProgram3 = 'one_building_map.out';
 assert(status == 0, 'Error during C code compilation:\n%s', cmdout3);
  
 %Run the C program
-cmd3 = sprintf('%s',compiledProgram );
+cmd3 = sprintf('%s',compiledProgram3 );
 
 [status, cdmout3] = system(cmd3);
 
