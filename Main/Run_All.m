@@ -19,7 +19,7 @@ end
 try
     Navier_Stokes_solver_main;
 catch
-    error('Erreur lors de l''exécution du programme MATLAB');
+    
 end
 
 
