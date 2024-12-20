@@ -59,7 +59,7 @@ end
 
 % Executes the MATLAB program
 try
-    Navier_Stockes_one_building;
+    Navier_Stokes_one_building;
 catch
     error('Erreur lors de l''exécution du programme MATLAB');
 end

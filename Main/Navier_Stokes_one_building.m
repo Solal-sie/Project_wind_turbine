@@ -28,9 +28,8 @@ wind_data = readmatrix('../Data/Wind_Data_Lausanne.csv');
     % Map for one building
 map_buildings = readmatrix('../Internal/map_one_building.csv');
 
-% file with the coordonates of each building (start x, start y, end x, 
+% file with the coordinates of each building (start x, start y, end x, 
 % end y) according to map_one_buildings.csv 
-
     % Coordinates for the building
 coordinates_buildings = readmatrix('../Internal/coordinates_one_building.csv');
 
